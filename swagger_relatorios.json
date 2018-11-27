@@ -1,0 +1,2457 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API de cadastros de informações globais, bem como gerenciamento de permissões.",
+        "version": "API 1.0.0.0",
+        "title": "API Saude",
+        "contact": {
+            "name": "Digifred",
+            "url": "www.digifred.com.br",
+            "email": "desenvolvimento@digifred.com.br"
+        },
+        "license": {}
+    },
+    "host": "127.0.0.1:9901",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Classificações de Relatórios",
+            "description": "Controller para consultar, inserir, alterar e excluir Classificações de Relatórios"
+        },
+        {
+            "name": "Fontes de dados",
+            "description": "Controller para consultar, inserir, alterar e excluir Fontes de dados"
+        },
+        {
+            "name": "Municípios",
+            "description": "Controller para consultar Municípios"
+        },
+        {
+            "name": "Relatórios",
+            "description": "Controller para consultar, inserir, alterar e excluir Relatórios"
+        }
+    ],
+    "paths": {
+        "/relatorios/classificacoes-relatorios": {
+            "get": {
+                "tags": [
+                    "Classificações de Relatórios"
+                ],
+                "summary": "Para essa url é necessário pelo menos um parâmetro. Os parâmetros podem ser usados como par=valor e/ou obj.par=valor (vários níveis são aceitos)",
+                "operationId": "buscaClassificacaoRelatoriosUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "colunas",
+                        "in": "query",
+                        "description": "Lista de colunas a serem consultadas, separadas por ,",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "filtros",
+                        "in": "query",
+                        "description": "Filtros da consulta, (>=|<=|<>|>|<|=| comecacom | igual | terminacom | contem | diferente) , conectores:  ( or | and |,|;)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ordem",
+                        "in": "header",
+                        "description": "Ordem, aceita asc e desc, separados por ex.: ordem=entidade.nome asc",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/DadosPaginadosDTO«ClassificacaoRelatorioDTO»"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Classificações de Relatórios"
+                ],
+                "summary": "Grava ClassificacaoRelatorios baseado em uma lista",
+                "operationId": "registraClassificacaoRelatoriosUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "ClassificacaoRelatorios",
+                        "description": "ClassificacaoRelatorios",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ClassificacaoRelatorioDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RetornoDTO«ClassificacaoRelatorio»"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Classificações de Relatórios"
+                ],
+                "summary": "Exclui ClassificacaoRelatorios baseado em uma lista",
+                "operationId": "excluirClassificacaoRelatoriosUsingDELETE",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "ClassificacaoRelatorios",
+                        "description": "Lista de ClassificacaoRelatorios a serem excluidos",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ClassificacaoRelatorioDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RetornoDTO«ClassificacaoRelatorio»"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/classificacoes-relatorios/{id}": {
+            "get": {
+                "tags": [
+                    "Classificações de Relatórios"
+                ],
+                "summary": "Busca um ClassificacaoRelatorio por id",
+                "operationId": "buscaClassificacaoRelatorioporIDUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id para consultar",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ClassificacaoRelatorioDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Classificações de Relatórios"
+                ],
+                "summary": "Exclui um ClassificacaoRelatorio por id",
+                "operationId": "excluirClassificacaoRelatorioporIDUsingDELETE",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Código do ClassificacaoRelatorio a ser excluído",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO«ClassificacaoRelatorio»"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/executar": {
+            "get": {
+                "tags": [
+                    "Relatórios"
+                ],
+                "summary": "Para essa url é necessário pelo menos um parâmetro. Os parâmetros podem ser usados como par=valor e/ou obj.par=valor (vários níveis são aceitos)",
+                "operationId": "executarRelatoriosUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "colunas",
+                        "in": "query",
+                        "description": "Lista de colunas a serem consultadas, separadas por ,",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "filtros",
+                        "in": "query",
+                        "description": "Filtros da consulta, (>=|<=|<>|>|<|=| comecacom | igual | terminacom | contem | diferente) , conectores:  ( or | and |,|;)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ordem",
+                        "in": "header",
+                        "description": "Ordem, aceita asc e desc, separados por ex.: ordem=entidade.nome asc",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/EmissaoRelatorioDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/fonte-dados-relatorios": {
+            "get": {
+                "tags": [
+                    "Fontes de dados"
+                ],
+                "summary": "Para essa url é necessário pelo menos um parâmetro. Os parâmetros podem ser usados como par=valor e/ou obj.par=valor (vários níveis são aceitos)",
+                "operationId": "buscaFonteDadossUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "colunas",
+                        "in": "query",
+                        "description": "Lista de colunas a serem consultadas, separadas por ,",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "filtros",
+                        "in": "query",
+                        "description": "Filtros da consulta, (>=|<=|<>|>|<|=| comecacom | igual | terminacom | contem | diferente) , conectores:  ( or | and |,|;)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ordem",
+                        "in": "header",
+                        "description": "Ordem, aceita asc e desc, separados por ex.: ordem=entidade.nome asc",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/DadosPaginadosDTO«FonteDadosDTO»"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Fontes de dados"
+                ],
+                "summary": "Grava FonteDadoss baseado em uma lista",
+                "operationId": "registraFonteDadosUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "fonteDadosDTOS",
+                        "description": "fonteDadosDTOS",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FonteDadosDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RetornoDTO«FonteDados»"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Fontes de dados"
+                ],
+                "summary": "Exclui FonteDadoss baseado em uma lista",
+                "operationId": "excluirFonteDadossUsingDELETE",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "fonteDadosDTOS",
+                        "description": "Lista de FonteDadoss a serem excluidos",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FonteDadosDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RetornoDTO«FonteDados»"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/fonte-dados-relatorios/{id}": {
+            "get": {
+                "tags": [
+                    "Fontes de dados"
+                ],
+                "summary": "Busca um FonteDados por id",
+                "operationId": "buscaFonteDadosporIDUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id para consultar",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FonteDadosDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Fontes de dados"
+                ],
+                "summary": "Exclui um FonteDados por id",
+                "operationId": "excluirFonteDadosporIDUsingDELETE",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Código do FonteDados a ser excluído",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO«FonteDados»"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/inicializa-fonte-dados-relatorios": {
+            "post": {
+                "tags": [
+                    "Fontes de dados"
+                ],
+                "summary": "Grava FonteDadoss baseado em uma lista",
+                "operationId": "inicializaFonteDadosUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "fonteDadosDTOS",
+                        "description": "fonteDadosDTOS",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FonteDadosDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RetornoDTO«FonteDados»"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/municipios": {
+            "get": {
+                "tags": [
+                    "Municípios"
+                ],
+                "summary": "Para essa url é necessário pelo menos um parâmetro. Os parâmetros podem ser usados como par=valor e/ou obj.par=valor (vários níveis são aceitos)",
+                "operationId": "buscaTesteUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "colunas",
+                        "in": "query",
+                        "description": "Lista de colunas a serem consultadas, separadas por ,",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "filtros",
+                        "in": "query",
+                        "description": "Filtros da consulta, (>=|<=|<>|>|<|=| comecacom | igual | terminacom | contem | diferente) , conectores:  ( or | and |,|;)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ordem",
+                        "in": "header",
+                        "description": "Ordem, aceita asc e desc, separados por ex.: ordem=entidade.nome asc",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/relatorios": {
+            "get": {
+                "tags": [
+                    "Relatórios"
+                ],
+                "summary": "Para essa url é necessário pelo menos um parâmetro. Os parâmetros podem ser usados como par=valor e/ou obj.par=valor (vários níveis são aceitos)",
+                "operationId": "buscaRelatoriosUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "colunas",
+                        "in": "query",
+                        "description": "Lista de colunas a serem consultadas, separadas por ,",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "filtros",
+                        "in": "query",
+                        "description": "Filtros da consulta, (>=|<=|<>|>|<|=| comecacom | igual | terminacom | contem | diferente) , conectores:  ( or | and |,|;)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ordem",
+                        "in": "header",
+                        "description": "Ordem, aceita asc e desc, separados por ex.: ordem=entidade.nome asc",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/DadosPaginadosDTO«RelatorioDTO»"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Relatórios"
+                ],
+                "summary": "Grava Relatorios baseado em uma lista",
+                "operationId": "registraRelatoriosUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Relatorios",
+                        "description": "Relatorios",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RelatorioDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RetornoDTO«Relatorio»"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Relatórios"
+                ],
+                "summary": "Exclui Relatorios baseado em uma lista",
+                "operationId": "excluirRelatoriosUsingDELETE",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Relatorios",
+                        "description": "Lista de Relatorios a serem excluidos",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RelatorioDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RetornoDTO«Relatorio»"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/relatorios/relatorios/{id}": {
+            "get": {
+                "tags": [
+                    "Relatórios"
+                ],
+                "summary": "Busca um Relatorio por id",
+                "operationId": "buscaRelatorioporIDUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id para consultar",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RelatorioDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Relatórios"
+                ],
+                "summary": "Exclui um Relatorio por id",
+                "operationId": "excluirRelatorioporIDUsingDELETE",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Código do Relatorio a ser excluído",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "context",
+                        "in": "header",
+                        "description": "No header é obrigatório o context com um objeto contextDTO contendo a chave pública da entidade, a chave pública do sistema, a chave pública do módulo e a chave pública da localização, caso haja. O conteúdo do contextDto deve ser convertido em Base64",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO«Relatorio»"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Não Autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Não Encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/RetornoDTO"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "AtributoFonteDados": {
+            "type": "object",
+            "properties": {
+                "ehFonteDados": {
+                    "type": "boolean"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "fonteDados": {
+                    "$ref": "#/definitions/FonteDados"
+                },
+                "iAtributoFonteDados": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "nomeClasse": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "type": "string"
+                }
+            },
+            "title": "AtributoFonteDados"
+        },
+        "AtributoFonteDadosDTO": {
+            "type": "object",
+            "properties": {
+                "ehFonteDados": {
+                    "type": "boolean"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "fonteDados": {
+                    "$ref": "#/definitions/FonteDadosDTO"
+                },
+                "iAtributoFonteDados": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "nomeClasse": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "type": "string"
+                }
+            },
+            "title": "AtributoFonteDadosDTO"
+        },
+        "ClassificacaoRelatorio": {
+            "type": "object",
+            "required": [
+                "nome"
+            ],
+            "properties": {
+                "classificacaoPai": {
+                    "$ref": "#/definitions/ClassificacaoRelatorio"
+                },
+                "entidade": {
+                    "$ref": "#/definitions/Entidade"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iClassificacaoRelatorio": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "modulo": {
+                    "$ref": "#/definitions/Modulo"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                }
+            },
+            "title": "ClassificacaoRelatorio"
+        },
+        "ClassificacaoRelatorioDTO": {
+            "type": "object",
+            "required": [
+                "nome"
+            ],
+            "properties": {
+                "classificacaoPai": {
+                    "$ref": "#/definitions/ClassificacaoRelatorioDTO"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iClassificacaoRelatorio": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "modulo": {
+                    "$ref": "#/definitions/Modulo"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                }
+            },
+            "title": "ClassificacaoRelatorioDTO"
+        },
+        "DadosPaginadosDTO«ClassificacaoRelatorioDTO»": {
+            "type": "object",
+            "properties": {
+                "conteudo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ClassificacaoRelatorioDTO"
+                    }
+                },
+                "numeroDaPagina": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quantidadeDePaginas": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "quantidadeDeRegistros": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "tamanhoDaPagina": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ultimaPagina": {
+                    "type": "boolean"
+                }
+            },
+            "title": "DadosPaginadosDTO«ClassificacaoRelatorioDTO»"
+        },
+        "DadosPaginadosDTO«FonteDadosDTO»": {
+            "type": "object",
+            "properties": {
+                "conteudo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FonteDadosDTO"
+                    }
+                },
+                "numeroDaPagina": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quantidadeDePaginas": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "quantidadeDeRegistros": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "tamanhoDaPagina": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ultimaPagina": {
+                    "type": "boolean"
+                }
+            },
+            "title": "DadosPaginadosDTO«FonteDadosDTO»"
+        },
+        "DadosPaginadosDTO«RelatorioDTO»": {
+            "type": "object",
+            "properties": {
+                "conteudo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatorioDTO"
+                    }
+                },
+                "numeroDaPagina": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quantidadeDePaginas": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "quantidadeDeRegistros": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "tamanhoDaPagina": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ultimaPagina": {
+                    "type": "boolean"
+                }
+            },
+            "title": "DadosPaginadosDTO«RelatorioDTO»"
+        },
+        "EmissaoRelatorioDTO": {
+            "type": "object",
+            "properties": {
+                "arquivo": {
+                    "type": "string"
+                },
+                "chave": {
+                    "type": "string"
+                },
+                "dataEmissao": {
+                    "type": "string"
+                },
+                "dataGeracao": {
+                    "type": "string"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "filtros": {
+                    "type": "string"
+                },
+                "iEmissaoRelatorio": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "modelo": {
+                    "$ref": "#/definitions/RelatorioDTO"
+                },
+                "usuario": {
+                    "$ref": "#/definitions/Usuario"
+                }
+            },
+            "title": "EmissaoRelatorioDTO"
+        },
+        "Entidade": {
+            "type": "object",
+            "required": [
+                "cep",
+                "cnpj",
+                "logradouro",
+                "municipio",
+                "nome"
+            ],
+            "properties": {
+                "brasao": {
+                    "type": "string"
+                },
+                "cep": {
+                    "type": "string"
+                },
+                "chavePublica": {
+                    "type": "string"
+                },
+                "cnpj": {
+                    "type": "string",
+                    "minLength": 14,
+                    "maxLength": 14
+                },
+                "complemento": {
+                    "type": "string"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "iEntidade": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "logradouro": {
+                    "type": "string"
+                },
+                "municipio": {
+                    "$ref": "#/definitions/Municipio"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "nomeRelatorios": {
+                    "type": "string"
+                },
+                "sigla": {
+                    "type": "string"
+                },
+                "site": {
+                    "type": "string"
+                },
+                "timezone": {
+                    "type": "string"
+                }
+            },
+            "title": "Entidade"
+        },
+        "FonteDados": {
+            "type": "object",
+            "properties": {
+                "atributosFonteDados": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AtributoFonteDados"
+                    }
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iFonteDados": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "nomeClasse": {
+                    "type": "string"
+                }
+            },
+            "title": "FonteDados"
+        },
+        "FonteDadosDTO": {
+            "type": "object",
+            "properties": {
+                "atributosFonteDados": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AtributoFonteDadosDTO"
+                    }
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iFonteDados": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "nomeClasse": {
+                    "type": "string"
+                }
+            },
+            "title": "FonteDadosDTO"
+        },
+        "Modulo": {
+            "type": "object",
+            "required": [
+                "nome",
+                "sistema"
+            ],
+            "properties": {
+                "chavePublica": {
+                    "type": "string"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iModulo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "sistema": {
+                    "$ref": "#/definitions/Sistema"
+                }
+            },
+            "title": "Modulo"
+        },
+        "Municipio": {
+            "type": "object",
+            "required": [
+                "codigoDne",
+                "nome",
+                "uf"
+            ],
+            "properties": {
+                "cep": {
+                    "type": "string"
+                },
+                "codigoDne": {
+                    "type": "string"
+                },
+                "codigoIbge": {
+                    "type": "string"
+                },
+                "codigoSefaz": {
+                    "type": "string"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iMunicipio": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "uf": {
+                    "$ref": "#/definitions/Uf"
+                }
+            },
+            "title": "Municipio"
+        },
+        "Pais": {
+            "type": "object",
+            "required": [
+                "nome",
+                "sigla2"
+            ],
+            "properties": {
+                "codigoCadsus": {
+                    "type": "string"
+                },
+                "codigoSefazrs": {
+                    "type": "string"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iPais": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "nomeIngles": {
+                    "type": "string"
+                },
+                "sigla2": {
+                    "type": "string"
+                },
+                "sigla3": {
+                    "type": "string"
+                }
+            },
+            "title": "Pais"
+        },
+        "Relatorio": {
+            "type": "object",
+            "required": [
+                "classificacaoRelatorio",
+                "fonteDados",
+                "nome"
+            ],
+            "properties": {
+                "classificacaoRelatorio": {
+                    "$ref": "#/definitions/ClassificacaoRelatorio"
+                },
+                "consultaPadrao": {
+                    "type": "boolean"
+                },
+                "entidade": {
+                    "$ref": "#/definitions/Entidade"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "fonteDados": {
+                    "$ref": "#/definitions/FonteDados"
+                },
+                "iRelatorio": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "identificador": {
+                    "type": "string"
+                },
+                "modulo": {
+                    "$ref": "#/definitions/Modulo"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "relatorioColunas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatorioColuna"
+                    }
+                },
+                "serviceConsulta": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "validacao": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "xml": {
+                    "type": "string",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "Relatorio"
+        },
+        "RelatorioColuna": {
+            "type": "object",
+            "required": [
+                "atributoFonteDados",
+                "nomeColuna"
+            ],
+            "properties": {
+                "atributoFonteDados": {
+                    "$ref": "#/definitions/AtributoFonteDados"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iRelatorioColuna": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nomeColuna": {
+                    "type": "string"
+                },
+                "relatorio": {
+                    "$ref": "#/definitions/Relatorio"
+                },
+                "subConsulta": {
+                    "type": "boolean"
+                },
+                "tituloColuna": {
+                    "type": "string"
+                }
+            },
+            "title": "RelatorioColuna"
+        },
+        "RelatorioColunaDTO": {
+            "type": "object",
+            "properties": {
+                "atributoFonteDados": {
+                    "$ref": "#/definitions/AtributoFonteDadosDTO"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iRelatorioColuna": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nomeColuna": {
+                    "type": "string"
+                },
+                "relatorio": {
+                    "$ref": "#/definitions/RelatorioDTO"
+                },
+                "subConsulta": {
+                    "type": "boolean"
+                },
+                "tituloColuna": {
+                    "type": "string"
+                }
+            },
+            "title": "RelatorioColunaDTO"
+        },
+        "RelatorioDTO": {
+            "type": "object",
+            "required": [
+                "nome"
+            ],
+            "properties": {
+                "classificacaoRelatorio": {
+                    "$ref": "#/definitions/ClassificacaoRelatorioDTO"
+                },
+                "consultaPadrao": {
+                    "type": "boolean"
+                },
+                "entidade": {
+                    "$ref": "#/definitions/Entidade"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "fonteDados": {
+                    "$ref": "#/definitions/FonteDadosDTO"
+                },
+                "iRelatorio": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "identificador": {
+                    "type": "string"
+                },
+                "modulo": {
+                    "$ref": "#/definitions/Modulo"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "relatorioColunas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatorioColunaDTO"
+                    }
+                },
+                "serviceConsulta": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "xml": {
+                    "type": "string"
+                }
+            },
+            "title": "RelatorioDTO"
+        },
+        "RetornoDTO": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date e Hora do retono em timestamp",
+                    "allowEmptyValue": false
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Código de status http, Códigos menores que 200 ou maiores que 299 representam que houve algum erro!",
+                    "allowEmptyValue": false
+                },
+                "idGravado": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi gravado corretamente.",
+                    "allowEmptyValue": false
+                },
+                "idComErro": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que teve problemas ao gravar. Só aparece se o status for menor que 200 ou maior que 299",
+                    "allowEmptyValue": false
+                },
+                "idExcluido": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi excluido corretamente.",
+                    "allowEmptyValue": false
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Retorna as mensagens de retorno informadas pela api.",
+                    "allowEmptyValue": false
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Retorna a url processada.",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "RetornoDTO"
+        },
+        "RetornoDTO«ClassificacaoRelatorio»": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date e Hora do retono em timestamp",
+                    "allowEmptyValue": false
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Código de status http, Códigos menores que 200 ou maiores que 299 representam que houve algum erro!",
+                    "allowEmptyValue": false
+                },
+                "idGravado": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi gravado corretamente.",
+                    "allowEmptyValue": false
+                },
+                "idComErro": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que teve problemas ao gravar. Só aparece se o status for menor que 200 ou maior que 299",
+                    "allowEmptyValue": false
+                },
+                "idExcluido": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi excluido corretamente.",
+                    "allowEmptyValue": false
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Retorna as mensagens de retorno informadas pela api.",
+                    "allowEmptyValue": false
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Retorna a url processada.",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "RetornoDTO«ClassificacaoRelatorio»"
+        },
+        "RetornoDTO«FonteDados»": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date e Hora do retono em timestamp",
+                    "allowEmptyValue": false
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Código de status http, Códigos menores que 200 ou maiores que 299 representam que houve algum erro!",
+                    "allowEmptyValue": false
+                },
+                "idGravado": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi gravado corretamente.",
+                    "allowEmptyValue": false
+                },
+                "idComErro": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que teve problemas ao gravar. Só aparece se o status for menor que 200 ou maior que 299",
+                    "allowEmptyValue": false
+                },
+                "idExcluido": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi excluido corretamente.",
+                    "allowEmptyValue": false
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Retorna as mensagens de retorno informadas pela api.",
+                    "allowEmptyValue": false
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Retorna a url processada.",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "RetornoDTO«FonteDados»"
+        },
+        "RetornoDTO«Relatorio»": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date e Hora do retono em timestamp",
+                    "allowEmptyValue": false
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Código de status http, Códigos menores que 200 ou maiores que 299 representam que houve algum erro!",
+                    "allowEmptyValue": false
+                },
+                "idGravado": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi gravado corretamente.",
+                    "allowEmptyValue": false
+                },
+                "idComErro": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que teve problemas ao gravar. Só aparece se o status for menor que 200 ou maior que 299",
+                    "allowEmptyValue": false
+                },
+                "idExcluido": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Retorna o id do registro que foi excluido corretamente.",
+                    "allowEmptyValue": false
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Retorna as mensagens de retorno informadas pela api.",
+                    "allowEmptyValue": false
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Retorna a url processada.",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "RetornoDTO«Relatorio»"
+        },
+        "Sistema": {
+            "type": "object",
+            "required": [
+                "nome"
+            ],
+            "properties": {
+                "chavePublica": {
+                    "type": "string"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "iSistema": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "tipoLocalizacao": {
+                    "$ref": "#/definitions/TipoLocalizacao"
+                }
+            },
+            "title": "Sistema"
+        },
+        "TipoLocalizacao": {
+            "type": "object",
+            "required": [
+                "nome"
+            ],
+            "properties": {
+                "estAnt": {
+                    "type": "object"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "iTipoLocalizacao": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "nome": {
+                    "type": "string"
+                }
+            },
+            "title": "TipoLocalizacao"
+        },
+        "Uf": {
+            "type": "object",
+            "required": [
+                "codigoDne",
+                "nome",
+                "pais",
+                "sigla"
+            ],
+            "properties": {
+                "codigoDne": {
+                    "type": "string"
+                },
+                "codigoSefazrs": {
+                    "type": "string"
+                },
+                "excluir": {
+                    "type": "boolean"
+                },
+                "iUf": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "nomeExibicao": {
+                    "type": "string"
+                },
+                "pais": {
+                    "$ref": "#/definitions/Pais"
+                },
+                "sigla": {
+                    "type": "string"
+                }
+            },
+            "title": "Uf"
+        },
+        "Usuario": {
+            "type": "object",
+            "properties": {
+                "excluir": {
+                    "type": "boolean"
+                },
+                "flagAtivo": {
+                    "type": "boolean"
+                },
+                "motivoInatividade": {
+                    "type": "string"
+                },
+                "novaSenha": {
+                    "type": "string"
+                },
+                "timezone": {
+                    "type": "string"
+                },
+                "tipoUsuario": {
+                    "type": "string"
+                },
+                "iUsuario": {
+                    "type": "integer",
+                    "format": "int64",
+                    "allowEmptyValue": false
+                },
+                "cpfCnpj": {
+                    "type": "string",
+                    "description": "Cpf ou cnpj do usuário, será o login",
+                    "allowEmptyValue": false,
+                    "minLength": 11,
+                    "maxLength": 20
+                },
+                "nome": {
+                    "type": "string",
+                    "description": "É o nome do usuário",
+                    "allowEmptyValue": false
+                },
+                "eMail": {
+                    "type": "string",
+                    "allowEmptyValue": false
+                },
+                "dataNascimento": {
+                    "type": "string",
+                    "description": "recebe no formato dd-MM-yyy",
+                    "allowEmptyValue": false
+                },
+                "telefone": {
+                    "type": "string",
+                    "allowEmptyValue": false,
+                    "minLength": 8,
+                    "maxLength": 10
+                },
+                "celular": {
+                    "type": "string",
+                    "allowEmptyValue": false,
+                    "minLength": 8,
+                    "maxLength": 11
+                },
+                "ramal": {
+                    "type": "string",
+                    "allowEmptyValue": false,
+                    "minLength": 1,
+                    "maxLength": 4
+                },
+                "flagNovidades": {
+                    "type": "boolean",
+                    "example": false,
+                    "allowEmptyValue": false
+                },
+                "foto": {
+                    "type": "string",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "Usuario"
+        }
+    }
+}
